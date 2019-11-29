@@ -10,6 +10,8 @@ class App extends Component {
    
       this.state = {
         topics: [],
+        tableHead: ['Title', 'Old value', 'New value', 'Delta'],
+        widthArr: [210, 50, 50, 50]
       };
   }
 
@@ -18,7 +20,7 @@ class App extends Component {
   }
 
   fetchTrends() {
-    data =fetch('http://192.168.0.13:5000/trends?top=5&interval=60')
+    data = fetch('http://192.168.0.13:5000/trends?top=30&interval=120')
     .then((response) => response.json())
     .then((data) => this.setState({ topics: data.topics }))
     .catch((error) => {
@@ -67,11 +69,11 @@ class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-  head: {  height: 40,  backgroundColor: '#f1f8ff'  },
+  container: { flex: 1, padding: 0, paddingTop: 24, backgroundColor: '#fff' },
+  header: { height: 50, backgroundColor: '#537791' },
   wrapper: { flexDirection: 'row' },
   title: { flex: 1, backgroundColor: '#f6f8fa' },
-  row: {  height: 28  },
+  row: {  height: 60  },
   text: { textAlign: 'center' }
 });
 
