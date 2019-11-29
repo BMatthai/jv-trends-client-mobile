@@ -20,7 +20,7 @@
     }
 
     fetchTrends() {
-      data = fetch('http://192.168.0.13:5000/trends?top=30&interval=120')
+      data = fetch('http://192.168.0.13:5000/trends?top=30&interval=240')
       .then((response) => response.json())
       .then((data) => this.setState({ topics: data.topics }))
       .catch((error) => {
@@ -30,14 +30,14 @@
       return data
     }
 
-  rowStyle(delta, sum_delta) {
-    color = 255 - ((delta / sum_delta) * 255)
+    rowStyle(delta, sum_delta) {
+      color = 255 - ((delta / sum_delta) * 255)
 
-    return {
-      height: 60,
-      backgroundColor: "rgb(255, " + color + ", 128)"
+      return {
+        height: 60,
+        backgroundColor: "rgb(255, " + color + ", 128)"
+      }
     }
-  }
 
     render() {
       const state = this.state
@@ -54,11 +54,11 @@
         <View style={styles.container}>
         <ScrollView horizontal={true}>
         <View>
-        <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
+        <Table borderStyle={{borderWidth: 1, borderColor: '#000000'}}>
         <Row data={state.tableHead} widthArr={state.widthArr} style={styles.header} textStyle={styles.text}/>
         </Table>
         <ScrollView style={styles.dataWrapper}>
-        <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
+        <Table borderStyle={{borderWidth: 1, borderColor: '#000000'}}>
         {
           array_topics.map((rowData, index) => (
           <Row
