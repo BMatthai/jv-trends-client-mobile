@@ -11,7 +11,7 @@
       this.state = {
         topics: [],
         tableHead: ['Title', 'Old value', 'New value', 'Delta'],
-        widthArr: [210, 50, 50, 50]
+        widthArr: [209, 50, 50, 50]
       };
     }
 
@@ -30,13 +30,24 @@
       return data
     }
 
+  rowStyle(delta, sum_delta) {
+    color = 255 - ((delta / sum_delta) * 255)
+
+    return {
+      height: 60,
+      backgroundColor: "rgb(255, " + color + ", 128)"
+    }
+  }
+
     render() {
       const state = this.state
 
       array_topics = []
+      sum_delta = 0
       for (let i = 0; i < state.topics.length; i += 1) {
         cur = state.topics[i]
-        array_topics.push([cur.title, cur.oldval, cur.newval, "+ " + cur.delta])
+        array_topics.push([cur.title, cur.oldval, cur.newval, cur.delta])
+        sum_delta += cur.delta
       }
 
       return (
@@ -54,7 +65,7 @@
           key={index}
           data={rowData}
           widthArr={state.widthArr}
-          style={[styles.row, index%2 && {backgroundColor: '#F7F6E7'}]}
+          style={ this.rowStyle(rowData[3], sum_delta)}
           textStyle={styles.text}
           />
           ))
@@ -73,7 +84,6 @@
     header: { height: 50, backgroundColor: '#537791' },
     wrapper: { flexDirection: 'row' },
     title: { flex: 1, backgroundColor: '#f6f8fa' },
-    row: {  height: 60  },
     text: { textAlign: 'center' }
   });
 
