@@ -1,6 +1,5 @@
   import React, { Component } from 'react';
-  import { StyleSheet, Text, View, ScrollView, Linking } from 'react-native';
-
+  import { StyleSheet, Text, View, ScrollView, Linking, Dimensions, StatusBar } from 'react-native';
   import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
   class App extends Component {
@@ -8,10 +7,13 @@
     constructor(props){
       super(props);
 
+      const screenWidth = Math.round(Dimensions.get('window').width);
+
       this.state = {
         topics: [],
-        tableHead: ['Title', 'Old value', 'New value', 'Delta'],
-        widthArr: [209, 50, 50, 50]
+        tableHead: ['Topic title', 'Posts\nH - 2', 'Posts\nH', 'Delta'],
+        statusBarHeight: StatusBar.currentHeight,
+        widthArr: [screenWidth * 0.58, screenWidth * 0.14, screenWidth * 0.14, screenWidth * 0.14]
       };
     }
 
@@ -31,15 +33,24 @@
       return data
     }
 
+    containerStyle() {
+          return {
+            flex: 1, 
+            padding: 0, 
+            paddingTop: this.state.statusBarHeight, 
+            backgroundColor: '#fff' }
+    }
     rowStyle(delta, sum_delta) {
-      color = 255 - ((delta / sum_delta) * 255)
-
       if (sum_delta == 0) {
         return {
           height: 60,
-          backgroundColor: "rgb(255, 255, 255)"
+          backgroundColor: "rgb(255, 255, 128)"
         } 
       }
+
+      color = 255 - ((delta / (sum_delta / 3)) * 255)
+      color = Math.min(color, 255)
+
 
       return {
         height: 60,
@@ -60,7 +71,7 @@
       }
 
       return (
-        <View style={styles.container}>
+        <View style={ this.containerStyle() }>
         <Table borderStyle={{borderWidth: 1, borderColor: '#000000'}}>
         <Row data={state.tableHead} widthArr={state.widthArr} style={styles.header} textStyle={styles.text}/>
         </Table>
@@ -86,8 +97,7 @@
   }
 
   const styles = StyleSheet.create({
-    container: { flex: 1, padding: 0, paddingTop: 24, backgroundColor: '#fff' },
-    header: { height: 50, backgroundColor: '#537791' },
+    header: { height: 60, backgroundColor: 'rgb(192, 192, 192)'},
     wrapper: { flexDirection: 'row' },
     title: { flex: 1, backgroundColor: '#f6f8fa' },
     text: { textAlign: 'center' }
