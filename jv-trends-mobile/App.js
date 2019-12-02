@@ -1,5 +1,5 @@
   import React, { Component } from 'react';
-  import { StyleSheet, Text, View, ScrollView } from 'react-native';
+  import { StyleSheet, Text, View, ScrollView, Linking } from 'react-native';
 
   import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
@@ -21,7 +21,7 @@
     }
 
     fetchTrends() {
-      data = fetch('http://192.168.0.13:5000/trends?top=30&interval=240')
+      data = fetch('http://192.168.0.13:5000/trends?top=20&interval=120')
       .then((response) => response.json())
       .then((data) => this.setState({ topics: data.topics }))
       .catch((error) => {
@@ -55,14 +55,12 @@
       for (let i = 0; i < state.topics.length; i += 1) {
         cur = state.topics[i]
 
-        array_topics.push([cur.title, cur.oldval, cur.newval, cur.delta])
+        array_topics.push([cur.title, cur.oldval, cur.newval, cur.delta, cur.link])
         sum_delta += cur.delta
       }
 
       return (
         <View style={styles.container}>
-        <ScrollView horizontal={true}>
-        <View>
         <Table borderStyle={{borderWidth: 1, borderColor: '#000000'}}>
         <Row data={state.tableHead} widthArr={state.widthArr} style={styles.header} textStyle={styles.text}/>
         </Table>
@@ -76,12 +74,11 @@
           widthArr={state.widthArr}
           style={ this.rowStyle(rowData[3], sum_delta)}
           textStyle={styles.text}
+          onPress={() => Linking.openURL('http://www.jeuxvideo.com' + rowData[4])}
           />
           ))
         }
         </Table>
-        </ScrollView>
-        </View>
         </ScrollView>
         </View>
         )
