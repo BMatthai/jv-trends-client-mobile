@@ -16,6 +16,7 @@
     }
 
     componentDidMount(){
+      this.fetchTrends()
       this.timer = setInterval(() => this.fetchTrends(), 5000)
     }
 
@@ -33,6 +34,13 @@
     rowStyle(delta, sum_delta) {
       color = 255 - ((delta / sum_delta) * 255)
 
+      if (sum_delta == 0) {
+        return {
+          height: 60,
+          backgroundColor: "rgb(255, 255, 255)"
+        } 
+      }
+
       return {
         height: 60,
         backgroundColor: "rgb(255, " + color + ", 128)"
@@ -46,6 +54,7 @@
       sum_delta = 0
       for (let i = 0; i < state.topics.length; i += 1) {
         cur = state.topics[i]
+
         array_topics.push([cur.title, cur.oldval, cur.newval, cur.delta])
         sum_delta += cur.delta
       }
@@ -63,7 +72,7 @@
           array_topics.map((rowData, index) => (
           <Row
           key={index}
-          data={rowData}
+          data={[rowData[0], rowData[1], rowData[2], "+" + rowData[3]]}
           widthArr={state.widthArr}
           style={ this.rowStyle(rowData[3], sum_delta)}
           textStyle={styles.text}
