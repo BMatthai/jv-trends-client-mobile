@@ -6,14 +6,15 @@
 
     constructor(props){
       super(props);
-      this.interval = 10
+      this.begin = 120
+      this.end = 0
       this.top = 20
       const screenWidth = Math.round(Dimensions.get('window').width);
       const screenHeight = Math.round(Dimensions.get('window').height) - StatusBar.currentHeight;
 
       this.state = {
         topics: [],
-        tableHead: ['Topic title', 'Posts\n(m - ' + this.interval + ')', 'Posts\n(m)', 'Delta'],
+        tableHead: ['Topic title', 'Posts\n(m - ' + this.begin + ')', 'Posts\n(m)', 'Delta'],
         statusBarHeight: StatusBar.currentHeight,
         rowHeight: screenHeight / 11,
         widthArr: [screenWidth * 0.58, screenWidth * 0.14, screenWidth * 0.14, screenWidth * 0.14]
@@ -26,7 +27,7 @@
     }
 
     fetchTrends() {
-      data = fetch('http://192.168.0.13:5000/trends?top=' + this.top + '&interval=' + this.interval)
+      data = fetch('http://192.168.0.13:5000/trends?top=' + this.top + '&begin=' + this.begin + '&end=' + this.end)
       .then((response) => response.json())
       .then((data) => this.setState({ topics: data.topics }))
       .catch((error) => {
