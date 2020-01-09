@@ -16,7 +16,7 @@ The web app is available [here](https://github.com/BMatthai/jv-trends-server).
 
 Here is a preview of the react-native application on an Android device. 
 
-![jv-trends-preview](https://drive.google.com/file/d/15J64Bq6lkeLzQqhwhbL6wKKShsEhYkOf/view?usp=sharing)
+![jv-trends-preview](https://drive.google.com/open?id=15J64Bq6lkeLzQqhwhbL6wKKShsEhYkOf)
 
 Each row represents a single topic from the forum "18-25" on website jeuxvideo.com. The first column contains the topic title. Second column contains the number of post as it was 2 hours ago. Third column is the last count of number of posts. Fourth column contains the difference between the two previous values.
 
