@@ -14,7 +14,7 @@ The web app is available [here](https://github.com/BMatthai/jv-trends-server).
 
 ## Preview
 
-Here is a preview of the react-native application on an Android device. 
+Here is a preview of the react-native application on an Android device:
 
 <img src="https://github.com/BMatthai/jv-trends-client-mobile/blob/master/resources/jv-trends-preview-1?raw=true " height="400" />
 
