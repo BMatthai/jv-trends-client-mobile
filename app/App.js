@@ -6,13 +6,17 @@
 
     constructor(props){
       super(props);
-
+      this.begin = 120
+      this.end = 0
+      this.top = 20
       const screenWidth = Math.round(Dimensions.get('window').width);
+      const screenHeight = Math.round(Dimensions.get('window').height) - StatusBar.currentHeight;
 
       this.state = {
         topics: [],
-        tableHead: ['Topic title', 'Posts\nH - 2', 'Posts\nH', 'Delta'],
+        tableHead: ['Topic title', 'Posts\n(m - ' + this.begin + ')', 'Posts\n(m)', 'Delta'],
         statusBarHeight: StatusBar.currentHeight,
+        rowHeight: screenHeight / 11,
         widthArr: [screenWidth * 0.58, screenWidth * 0.14, screenWidth * 0.14, screenWidth * 0.14]
       };
     }
@@ -23,7 +27,7 @@
     }
 
     fetchTrends() {
-      data = fetch('http://192.168.0.13:5000/trends?top=20&interval=120')
+      data = fetch('http://192.168.0.13:5000/trends?top=' + this.top + '&begin=' + this.begin + '&end=' + this.end)
       .then((response) => response.json())
       .then((data) => this.setState({ topics: data.topics }))
       .catch((error) => {
@@ -32,18 +36,20 @@
 
       return data
     }
-
+    
     containerStyle() {
-          return {
-            flex: 1, 
-            padding: 0, 
-            paddingTop: this.state.statusBarHeight, 
-            backgroundColor: '#fff' }
+      return {
+        flex: 1, 
+        padding: 0, 
+        paddingTop: this.state.statusBarHeight, 
+        backgroundColor: '#fff' 
+      }
     }
+
     rowStyle(delta, sum_delta) {
       if (sum_delta == 0) {
         return {
-          height: 60,
+          height: this.state.rowHeight,
           backgroundColor: "rgb(255, 255, 128)"
         } 
       }
@@ -53,8 +59,15 @@
 
 
       return {
-        height: 60,
+        height: this.state.rowHeight,
         backgroundColor: "rgb(255, " + color + ", 128)"
+      }
+    }
+
+   headerStyle() {
+      return {
+        height: this.state.rowHeight,
+        backgroundColor: "rgb(192, 192, 192)"
       }
     }
 
@@ -72,8 +85,13 @@
 
       return (
         <View style={ this.containerStyle() }>
-        <Table borderStyle={{borderWidth: 1, borderColor: '#000000'}}>
-        <Row data={state.tableHead} widthArr={state.widthArr} style={styles.header} textStyle={styles.text}/>
+        <Table  borderStyle={{borderWidth: 1, borderColor: '#000000'}}>
+        <Row 
+        style={ this.headerStyle() } 
+        data={state.tableHead} 
+        widthArr={state.widthArr} 
+        textStyle={styles.text}
+        />
         </Table>
         <ScrollView style={styles.dataWrapper}>
         <Table borderStyle={{borderWidth: 1, borderColor: '#000000'}}>
@@ -97,7 +115,6 @@
   }
 
   const styles = StyleSheet.create({
-    header: { height: 60, backgroundColor: 'rgb(192, 192, 192)'},
     wrapper: { flexDirection: 'row' },
     title: { flex: 1, backgroundColor: '#f6f8fa' },
     text: { textAlign: 'center' }
